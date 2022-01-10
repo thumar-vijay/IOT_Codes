@@ -1,0 +1,49 @@
+int soundSensor=D1;
+int LED=D6;
+int buzzer =D8;
+boolean LEDStatus=false;
+
+void setup() {
+ pinMode(soundSensor,INPUT);
+ pinMode(LED,OUTPUT);
+ pinMode(buzzer,OUTPUT);
+ digitalWrite(buzzer,LOW);
+ Serial.begin(9600);
+
+}
+
+void loop() {
+
+  int SensorData=digitalRead(soundSensor); 
+  if(SensorData==1){
+
+    if(LEDStatus==false){
+        LEDStatus=true;
+        digitalWrite(LED,LOW);
+        delay(500);
+        Serial.print("Led low           ");
+    }
+    else{
+        LEDStatus=false;
+        Serial.print("led high         ");
+        digitalWrite(LED,HIGH);
+                                     
+//        Timer and count down start
+                                    int dtime = 10;   
+                                    while (dtime != 0) 
+                                    {
+                                      for (dtime; dtime>0; dtime--)
+                                      {
+                                          Serial.println(dtime);
+                                          if(dtime <= 5){
+                                            digitalWrite(buzzer,HIGH);
+                                            Serial.println("remain");
+                                            }
+                                          delay(1000);
+                                      }
+                                          digitalWrite(LED,LOW);
+                                    }
+//        Timer and count down end
+  }
+ } 
+ }

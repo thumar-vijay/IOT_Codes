@@ -1,4 +1,4 @@
-
+// Edited by Vijay-Thumar (https://github.com/thumar-vijay/IOT_Codes) --- GOTO Aelexa_Controlling_W_O_Internet
 
 #ifdef ARDUINO_ARCH_ESP32
 #include <WiFi.h>
@@ -7,11 +7,14 @@
 #endif
 #include <Espalexa.h>
 
-
 #define R1 D0
 #define R2 D1
 #define R3 D2
-
+#define R4 D3
+#define R5 D4
+#define R6 D5
+#define R7 D6
+#define R8 D7
 
 // prototypes
 boolean connectWifi();
@@ -20,6 +23,11 @@ boolean connectWifi();
 void firstLightChanged(uint8_t brightness);
 void secondLightChanged(uint8_t brightness);
 void thirdLightChanged(uint8_t brightness);
+void fourthLightChanged(uint8_t brightness);
+void fifthLightChanged(uint8_t brightness);
+void sixthLightChanged(uint8_t brightness);
+void seventhLightChanged(uint8_t brightness);
+void eighthLightChanged(uint8_t brightness);
 
 
 // Change this!!
@@ -28,36 +36,78 @@ void thirdLightChanged(uint8_t brightness);
 const char* ssid = "Ayaan";
 const char* password = "210318@ayaan";
 
-// device names
-String Device_1_Name = "bedroom light";
-String Device_2_Name = "bedroom fan";
-String Device_3_Name = "Bedroom back light";
+//const char* ssid = "smarthome";
+//const char* password = "password@#1";
+
+// device names as per node mcu default is 8 pin
+String Device_1_Name = "device1";
+String Device_2_Name = "device2";
+String Device_3_Name = "device3";
+String Device_4_Name = "device4";
+String Device_5_Name = "device5";
+String Device_6_Name = "device6";
+String Device_7_Name = "device7";
+String Device_8_Name = "device8";
 
 boolean wifiConnected = false;
 
 Espalexa espalexa;
 
-
 const int a = D0;
 const int b = D1;
 const int c = D2;
+const int d = D3;
+const int e = D4;
+const int f = D5;
+const int g = D6;
+const int h = D7;
 
 void setup()
 {
-  Serial.begin(115200);
-
+  Serial.begin(9600); 
   pinMode(R1, OUTPUT);
   pinMode(R2, OUTPUT);
   pinMode(R3, OUTPUT);
+  pinMode(R4, OUTPUT);
+  pinMode(R5, OUTPUT);
+  pinMode(R6, OUTPUT);
+  pinMode(R7, OUTPUT);
+  pinMode(R8, OUTPUT);
 
 
   
+digitalWrite(D0, HIGH);
 digitalWrite(D1, HIGH);
 digitalWrite(D2, HIGH);
-digitalWrite(D0, HIGH);
+digitalWrite(D3, HIGH);
+digitalWrite(D4, HIGH);
+digitalWrite(D5, HIGH);
+digitalWrite(D6, HIGH);
+digitalWrite(D7, HIGH);
+digitalWrite(D8, HIGH);
+
 
   // Initialise wifi connection
-  wifiConnected = connectWifi();
+                                                //        Timer and count down start
+                                                int dtime=10; //Seconds
+                                                while (dtime !=0) {
+                                                
+                                                            for (dtime; dtime>0; dtime--) {
+                                                              Serial.print("Countdown: ");
+                                                                Serial.println(dtime);
+                                                
+                                                                if(dtime <=1) {
+                                                                    Serial.print("Action ");
+                                                                      wifiConnected = connectWifi();
+                                                                      
+                                                                }
+                                                
+                                                                delay(1000);
+                                                            }
+                                                        }
+                                                
+                                                 //        Timer and count down end
+ // Delay for connection
 
   if (wifiConnected)
   {
@@ -66,6 +116,11 @@ digitalWrite(D0, HIGH);
     espalexa.addDevice(Device_1_Name, firstLightChanged); //simplest definition, default state off
     espalexa.addDevice(Device_2_Name, secondLightChanged);
     espalexa.addDevice(Device_3_Name, thirdLightChanged);
+    espalexa.addDevice(Device_4_Name, fourthLightChanged);
+    espalexa.addDevice(Device_5_Name, fifthLightChanged);
+    espalexa.addDevice(Device_6_Name, sixthLightChanged);
+    espalexa.addDevice(Device_7_Name, seventhLightChanged);
+    espalexa.addDevice(Device_8_Name, eighthLightChanged);
 
 
     espalexa.begin();
@@ -74,10 +129,12 @@ digitalWrite(D0, HIGH);
 
   else
   {
-    while (1)
+    while (WiFi.status() != WL_CONNECTED)
     {
       Serial.println("Cannot connect to WiFi. Please check data and reset the ESP.");
       delay(2500);
+      wifiConnected = connectWifi();
+
     }
   }
 
@@ -90,6 +147,7 @@ void loop()
 }
 
 //our callback functions
+// first device call back function
 void firstLightChanged(uint8_t brightness)
 {
   //Control the device
@@ -110,6 +168,7 @@ void firstLightChanged(uint8_t brightness)
   }
 }
 
+// Second device call back function
 void secondLightChanged(uint8_t brightness)
 {
 
@@ -131,6 +190,7 @@ void secondLightChanged(uint8_t brightness)
   }
 }
 
+// Third device call back function
 void thirdLightChanged(uint8_t brightness)
 {
 
@@ -152,9 +212,110 @@ void thirdLightChanged(uint8_t brightness)
   }
 }
 
+// Fourth device call back function
+void fourthLightChanged(uint8_t brightness)
+{
+  //Control the device
+  if (brightness)
+  {
+    if (brightness == 255)
+    {
+      digitalWrite(R4, LOW);
+      Serial.println("Device1 ON");
+    }
+    //Serial.print("ON, brightness ");
+    //Serial.println(brightness);
+  }
+  else
+  {
+    digitalWrite(R4, HIGH);
+    Serial.println("Device1 OFF");
+  }
+}
 
+// fifth device call back function
+void fifthLightChanged(uint8_t brightness)
+{
+  //Control the device
+  if (brightness)
+  {
+    if (brightness == 255)
+    {
+      digitalWrite(R5, LOW);
+      Serial.println("Device1 ON");
+    }
+    //Serial.print("ON, brightness ");
+    //Serial.println(brightness);
+  }
+  else
+  {
+    digitalWrite(R5, HIGH);
+    Serial.println("Device1 OFF");
+  }
+}
 
+// sixth device call back function
+void fifthLightChanged(uint8_t brightness)
+{
+  //Control the device
+  if (brightness)
+  {
+    if (brightness == 255)
+    {
+      digitalWrite(R6, LOW);
+      Serial.println("Device1 ON");
+    }
+    //Serial.print("ON, brightness ");
+    //Serial.println(brightness);
+  }
+  else
+  {
+    digitalWrite(R6, HIGH);
+    Serial.println("Device1 OFF");
+  }
+}
 
+// seventh device call back function
+void fifthLightChanged(uint8_t brightness)
+{
+  //Control the device
+  if (brightness)
+  {
+    if (brightness == 255)
+    {
+      digitalWrite(R7, LOW);
+      Serial.println("Device1 ON");
+    }
+    //Serial.print("ON, brightness ");
+    //Serial.println(brightness);
+  }
+  else
+  {
+    digitalWrite(R7, HIGH);
+    Serial.println("Device1 OFF");
+  }
+}
+
+// eighth device call back function
+void fifthLightChanged(uint8_t brightness)
+{
+  //Control the device
+  if (brightness)
+  {
+    if (brightness == 255)
+    {
+      digitalWrite(R8, LOW);
+      Serial.println("Device1 ON");
+    }
+    //Serial.print("ON, brightness ");
+    //Serial.println(brightness);
+  }
+  else
+  {
+    digitalWrite(R8, HIGH);
+    Serial.println("Device1 OFF");
+  }
+}
 
 // connect to wifi – returns true if successful or false if not
 boolean connectWifi()
